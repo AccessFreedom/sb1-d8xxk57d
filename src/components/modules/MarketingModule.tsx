@@ -3,6 +3,19 @@ import { useAppContext } from '../../contexts/AppContext';
 import { Edit, Trash2, Plus, Search, Filter, TrendingUp, AlertCircle, PlayCircle, PauseCircle } from 'lucide-react';
 import { Campaign } from '../../types';
 
+/**
+* Manages marketing campaigns including adding, editing, and deleting.
+* @example
+* manageCampaign(sample_campaign)
+* Displays campaign management UI and functionality
+* @param {Campaign[]} campaigns - List of campaign objects to manage.
+* @returns {JSX.Element} A component that provides a UI to handle marketing campaigns.
+* @description
+*   - Uses React hooks like useState to maintain local component state.
+*   - Filters campaigns based on search criteria and campaign status.
+*   - Formats monetary amounts using the British Pounds currency format.
+*   - Calculates campaign performance metrics such as ROI and conversion rate.
+*/
 const MarketingModule: React.FC = () => {
   const { campaigns, addCampaign, updateCampaign, deleteCampaign } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
@@ -57,6 +70,18 @@ const MarketingModule: React.FC = () => {
   };
 
   // Status badge component
+  /**
+   * Assigns a specific CSS class based on the status string to create a styled badge component.
+   * @example
+   * statusBadge({ status: 'active' })
+   * <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+   * @param {Object} status - An object containing a status string which determines the badge styling.
+   * @returns {JSX.Element} A span element with applied styling and capitalized status text.
+   * @description
+   *   - The function capitalizes the first letter of the status before displaying it.
+   *   - The component uses Tailwind CSS classes for styling.
+   *   - The badge color depends on the status: blue for 'planned', green for 'active', and gray for 'completed'.
+   */
   const StatusBadge: React.FC<{ status: Campaign['status'] }> = ({ status }) => {
     let colorClass = '';
     
@@ -80,6 +105,17 @@ const MarketingModule: React.FC = () => {
   };
 
   // Handle form input change
+  /**
+  * Handles user input changes for campaign forms, updating either an existing campaign or a new campaign with the input values.
+  * @example
+  * handleInputChange(event)
+  * // Updates the campaign data based on user input from the form
+  * @param {React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>} e - The input change event from a form element.
+  * @returns {void} This function does not return anything.
+  * @description
+  *   - Parses input values as floats for specific numeric fields ('budget', 'spent', 'leads', 'conversions').
+  *   - Updates the state either for editing an existing campaign or creating a new one, based on the presence of editingCampaign state.
+  */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     const numericFields = ['budget', 'spent', 'leads', 'conversions'];
@@ -98,6 +134,18 @@ const MarketingModule: React.FC = () => {
   };
 
   // Handle add new campaign
+  /**
+   * Handles form submission for creating a new campaign
+   * @example
+   * handleSubmit(e)
+   * void
+   * @param {React.FormEvent} e - The event object from the form submission.
+   * @returns {void} No return value.
+   * @description
+   *   - Prevents the default form submission behavior to handle processing via JavaScript.
+   *   - Resets the new campaign form fields to their initial values after submission.
+   *   - Closes the modal window used for adding a new campaign.
+   */
   const handleAddCampaign = (e: React.FormEvent) => {
     e.preventDefault();
     addCampaign(newCampaign);
@@ -135,6 +183,19 @@ const MarketingModule: React.FC = () => {
   const CampaignForm: React.FC<{
     onSubmit: (e: React.FormEvent) => void;
     isEdit?: boolean;
+  /**
+   * Renders a form for creating or editing a marketing campaign.
+   * @example
+   * formComponent({ onSubmit: handleSubmit, isEdit: true })
+   * // Returns a JSX element containing the campaign form.
+   * @param {function} onSubmit - The event handler function for form submission.
+   * @param {boolean} [isEdit=false] - Flag indicating if the form is in edit mode.
+   * @returns {JSX.Element} A form element for campaign data input.
+   * @description
+   *   - Uses `editingCampaign` data if `isEdit` is true, otherwise initializes a new campaign.
+   *   - Form contains inputs for campaign details such as name, type, dates, budget, and status.
+   *   - Includes "Cancel" and "Submit" buttons with behavior based on the `isEdit` flag.
+   */
   }> = ({ onSubmit, isEdit = false }) => {
     const campaign = isEdit ? editingCampaign : newCampaign;
     

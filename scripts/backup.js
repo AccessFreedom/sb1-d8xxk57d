@@ -4,6 +4,19 @@ import { join, dirname } from 'node:path';
 
 const BACKUP_DIR = 'backup_' + new Date().toISOString().replace(/[:.]/g, '-');
 
+/**
+ * Copies contents from the source directory to the destination, excluding specified directories.
+ * @example
+ * copyDirectory('path/to/source', 'path/to/destination')
+ * // Copies all contents except 'node_modules', 'backup_', and 'dist' from source to destination
+ * @param {string} source - Path to the source directory.
+ * @param {string} destination - Path to the destination directory.
+ * @returns {Promise<void>} Resolves when the copy operation is complete.
+ * @description
+ *   - Recursively copies directories and files from the source to the destination.
+ *   - Excludes copying directories named 'node_modules', 'backup_', and 'dist'.
+ *   - Automatically creates the destination directory and any necessary parent directories.
+ */
 async function copyDirectory(source, destination) {
   // Create destination directory
   await mkdir(destination, { recursive: true });
@@ -33,6 +46,19 @@ async function copyDirectory(source, destination) {
   }
 }
 
+/**
+* Creates a backup of the current project directory, excluding certain folders.
+* @example
+* createBackup()
+* undefined
+* @param {string} BACKUP_DIR - Directory where the backup will be created.
+* @returns {void} Does not return a value.
+* @description
+*   - Logs progress and results to the console, including success and failure messages.
+*   - Ensures the backup directory does not pre-exist to avoid overwriting.
+*   - Excludes `node_modules` and `dist` folders from the backup.
+*   - Handles errors during copying and logs them to the console.
+*/
 async function createBackup() {
   console.log(`Creating backup in ./${BACKUP_DIR}`);
   

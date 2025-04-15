@@ -40,6 +40,20 @@ const ReportsModule: React.FC = () => {
   };
 
   // Filter data by date range
+  /**
+  * Filters items based on a date range
+  * @example
+  * filterItemsByDateRange(itemsArray, 'week')
+  * Returns items from the last week.
+  * @param {Array} items - An array of items to be filtered.
+  * @param {string} dateRange - The range of dates to filter by ('week', 'month', 'quarter', or 'year').
+  * @param {string} dateField - The field representing the date in each item, defaults to 'date'.
+  * @returns {Array} Filtered array of items based on the specified date range.
+  * @description
+  *   - Filters out items which are older than the specified date range.
+  *   - Returns the original array when dateRange does not match any of the specified options.
+  *   - Utilizes JavaScript Date object to compute thresholds.
+  */
   const filterByDateRange = (items, dateField = 'date') => {
     const now = new Date();
     let threshold = new Date();
@@ -67,6 +81,17 @@ const ReportsModule: React.FC = () => {
   };
 
   // Get title based on current report type
+  /**
+  * Generates a report title based on the report type.
+  * @example
+  * getReportTitle('sales')
+  * 'Sales Report'
+  * @param {string} reportType - Type of the report to generate the title for.
+  * @returns {string} The corresponding report title based on provided type.
+  * @description
+  *   - Handles predefined report types such as 'sales', 'expenses', 'inventory', 'customers', and 'marketing'.
+  *   - Defaults to 'Report' if the report type does not match predefined cases.
+  */
   const getReportTitle = () => {
     switch (reportType) {
       case 'sales':
@@ -85,6 +110,26 @@ const ReportsModule: React.FC = () => {
   };
 
   // Generate sales report data
+  /**
+  * Generates a comprehensive sales and invoices report within a specified date range.
+  * @example
+  * generateSalesReport()
+  * {
+  *   totalSales: 25000,
+  *   invoiceCount: 100,
+  *   paidInvoiceCount: 70,
+  *   overdueInvoiceCount: 5,
+  *   averageSale: 250,
+  *   salesByStatus: {...},
+  *   topCustomers: [...]
+  * }
+  * @param {Array<Object>} invoices - List of invoice objects to be filtered and analyzed.
+  * @returns {Object} An object containing total sales, invoice metrics, sales by status, and top customers.
+  * @description
+  *   - The function filters invoices by a specified date range and computes various metrics.
+  *   - It calculates the total sales, number and statuses of invoices.
+  *   - Identifies the top 5 customers based on sales volume.
+  */
   const generateSalesReport = () => {
     const filteredInvoices = filterByDateRange(invoices);
     
@@ -129,6 +174,26 @@ const ReportsModule: React.FC = () => {
   };
 
   // Generate expense report data
+  /**
+   * Analyzes expenses to provide insights such as total amount, count, and categorization.
+   * @example
+   * analyzeExpenses(expenses)
+   * {
+   *   totalExpenses: 500,
+   *   expenseCount: 30,
+   *   paidExpenseCount: 15,
+   *   pendingExpenseCount: 10,
+   *   topCategories: [{category: 'Food', amount: 200}, {...}],
+   *   expensesByStatus: {paid: 250, approved: 150, pending: 100}
+   * }
+   * @param {Array<Object>} expenses - Array of expense objects, each object should have 'amount', 'category', and 'status' properties.
+   * @returns {Object} Returns an object containing insights such as total expenses, counts, categorization, and expenses by status.
+   * @description
+   *   - Filters expenses based on a predefined date range before processing.
+   *   - Reduces and categorizes the expenses, focusing on key insights.
+   *   - Sorts the category data to identify top expenses by category.
+   *   - Provides a breakdown of expenses by different statuses.
+   */
   const generateExpenseReport = () => {
     const filteredExpenses = filterByDateRange(expenses);
     
@@ -168,6 +233,21 @@ const ReportsModule: React.FC = () => {
   };
 
   // Generate inventory report data
+  /**
+  * Computes various inventory statistics from a list of products
+  * @example
+  * calculateInventoryStats([
+  *   { costPrice: 50, stock: 100, reorderLevel: 20 },
+  *   { costPrice: 30, stock: 0, reorderLevel: 10 }
+  * ])
+  * Returns an object containing total inventory value, low stock items, etc.
+  * @param {Array<Object>} products - An array of product objects each containing costPrice, stock, and reorderLevel properties.
+  * @returns {Object} An object containing the total inventory value, count of products, count of low stock and out of stock items, and top products by inventory value.
+  * @description
+  *   - The function calculates the total inventory value by summing the product of the costPrice and stock of each product.
+  *   - Identifies and counts products with stock below or equal to their reorder level and with zero stock.
+  *   - Provides a list of the top 5 products sorted by their inventory value.
+  */
   const generateInventoryReport = () => {
     // Calculate inventory value
     const totalInventoryValue = products.reduce((sum, product) => sum + (product.costPrice * product.stock), 0);
@@ -198,6 +278,27 @@ const ReportsModule: React.FC = () => {
   };
 
   // Generate customer report data
+  /**
+   * Generates a report summary based on customer data and sales invoices.
+   * @example
+   * generateReportSummary(customers, invoices)
+   * {
+   *   totalCustomers: 150,
+   *   activeCustomerCount: 75,
+   *   leadCount: 50,
+   *   customersByStatus: { active: 75, inactive: 25, lead: 50 },
+   *   recentCustomers: [{...}, {...}, {...}, {...}, {...}],
+   *   topCustomers: [{...}, {...}, {...}, {...}, {...}]
+   * }
+   * @param {Array} customers - Array of customer objects containing 'status' and 'lastContact' properties.
+   * @param {Array} invoices - Array of invoice objects containing 'customerId', 'customerName', and 'total'.
+   * @returns {Object} A summary object containing total customer count, active and lead counts, customers grouped by status, most recent customers, and top customers based on sales.
+   * @description
+   *   - Filters customers based on their status to categorize them as active or leads.
+   *   - Sorts and retrieves the five most recently contacted customers.
+   *   - Calculates total sales and transaction count for each customer based on invoices.
+   *   - Identifies the top five customers according to their total sales.
+   */
   const generateCustomerReport = () => {
     // Active customers
     const activeCustomers = customers.filter(customer => customer.status === 'active');
@@ -246,6 +347,24 @@ const ReportsModule: React.FC = () => {
   };
 
   // Generate marketing report data
+  /**
+   * Analyzes marketing campaign performance metrics over a specified date range.
+   * @example
+   * analyzeCampaigns()
+   * {
+   *   totalCampaigns: 5,
+   *   activeCampaigns: 3,
+   *   totalSpend: 10000,
+   *   totalLeads: 200,
+   *   ...
+   * }
+   * @param {Array} campaigns - Array of campaign objects containing details like name, type, leads, conversions, spent, and status.
+   * @returns {Object} An object containing aggregated campaign performance metrics such as total campaigns, active campaigns, spend, leads, conversions, conversion rate, and cost per metric.
+   * @description
+   *   - Filters campaigns based on the start date range.
+   *   - Computes metrics like total marketing spend, leads, conversions, conversion rate, cost per lead, and cost per conversion.
+   *   - Sorts campaign performance by the number of conversions in descending order.
+   */
   const generateMarketingReport = () => {
     const filteredCampaigns = filterByDateRange(campaigns, 'startDate');
     
@@ -287,6 +406,18 @@ const ReportsModule: React.FC = () => {
   };
 
   // Get current report data based on type
+  /**
+  * Generates a report based on the specified report type.
+  * @example
+  * generateReport('sales')
+  * // returns a sales report object
+  * @param {string} reportType - The type of report to generate. Valid types include 'sales', 'expenses', 'inventory', 'customers', and 'marketing'.
+  * @returns {Object} The generated report object based on the specified type. Returns an empty object for unrecognized report types.
+  * @description
+  *   - Ensures different report functions are called based on the reportType value.
+  *   - Utilizes a switch-case statement for dispatching report generation functions.
+  *   - Presents a basic structure to extend support for additional reports in the future.
+  */
   const getCurrentReportData = () => {
     switch (reportType) {
       case 'sales':
@@ -328,6 +459,20 @@ const ReportsModule: React.FC = () => {
     id: string;
     label: string;
     icon: React.ReactNode;
+  /**
+  * Renders a button with a specified icon and label, changing styles based on an active state.
+  * @example
+  * myButtonComponent({ id: 'report1', label: 'Report 1', icon: <ReportIcon /> })
+  * // renders a button element with the provided label and icon.
+  * @param {Object} props - The properties for the button rendering.
+  * @param {string} props.id - Unique identifier for the button, used to determine the active state.
+  * @param {string} props.label - The text label displayed on the button.
+  * @param {JSX.Element} props.icon - JSX component representing the icon to be displayed alongside the label.
+  * @returns {JSX.Element} A button element styled based on whether it is active or inactive.
+  * @description
+  *   - Applies different styles based on the button's active state determined by 'reportType'.
+  *   - Handles button click event to set the report type to its 'id'.
+  */
   }> = ({ id, label, icon }) => (
     <button
       className={`flex items-center px-4 py-2 rounded-md transition-colors ${
@@ -343,6 +488,19 @@ const ReportsModule: React.FC = () => {
   );
 
   // Render specific report content based on type
+  /**
+  * Generates a report based on specified report type, including sales, expenses, inventory, customers, and marketing details.
+  * @example
+  * generateReport('sales', reportData)
+  * Returns an HTML section with detailed sales report.
+  * @param {string} reportType - Type of report to generate, such as 'sales', 'expenses', 'inventory', 'customers', or 'marketing'.
+  * @param {Object} reportData - Contains data required to populate the report; structure depends on reportType.
+  * @returns {JSX.Element} Returns component rendering the selected report type with relevant data.
+  * @description
+  *   - Utilizes conditional rendering through switch statements based on reportType to generate suitable HTML content.
+  *   - Integrates currency formatting using `formatCurrency` function for financial figures.
+  *   - Adapts grid layout dynamically for different screen sizes using Tailwind CSS classes.
+  */
   const renderReportContent = () => {
     switch (reportType) {
       case 'sales':
