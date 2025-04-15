@@ -72,6 +72,22 @@ const SettingsModule: React.FC = () => {
     id: string;
     label: string;
     icon: React.ReactNode;
+  /**
+  * Renders an interactive tab button component with customizable label and icon.
+  * @example
+  * renderTabButton({ id: 'home', label: 'Home', icon: <HomeIcon /> })
+  * // Returns a button element with the specified label and icon
+  * @param {Object} params - An object containing properties for the tab button.
+  * @param {string} params.id - Unique identifier for the tab.
+  * @param {string|React.Element} params.label - Label text displayed on the tab button.
+  * @param {React.Element} params.icon - Icon element to display alongside the label.
+  * @returns {JSX.Element} A button element styled based on the active state.
+  * @description
+  *   - The button toggles between active and inactive states by changing its background and text colors.
+  *   - Clicking the button triggers a function to set the button as the active tab.
+  *   - Utilizes Tailwind CSS for styling.
+  *   - Part of the SettingsModule component and used for navigating within the module.
+  */
   }> = ({ id, label, icon }) => (
     <button
       className={`flex items-center px-4 py-2 mb-1 rounded-lg transition-colors ${
@@ -87,6 +103,21 @@ const SettingsModule: React.FC = () => {
   );
   
   // Render profile settings
+  /**
+   * Renders a form to update personal user information.
+   * @example
+   * SettingsModule()
+   * Returns a JSX form component allowing users to update their details and submit changes.
+   * @param {object} userInfo - An object containing user information such as `firstName`, `lastName`, `email`, `phone`, `position`, and `department`.
+   * @param {function} handleSubmit - Function to handle the form submission event.
+   * @param {function} handleUserInfoChange - Function to handle changes in user information fields.
+   * @returns {JSX.Element} A form component for updating personal information, including fields for names, email, phone, position, department, and a profile photo.
+   * @description
+   *   - The form is structured into sections for "Personal Information" and "User Photo".
+   *   - User's initials are displayed as a avatar placeholder in the photo section.
+   *   - Department selection includes predefined options such as Management, Sales, Marketing, etc.
+   *   - The 'Save Changes' button triggers the form submission.
+   */
   const renderProfileSettings = () => (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
@@ -201,6 +232,18 @@ const SettingsModule: React.FC = () => {
   );
   
   // Render company settings
+  /**
+   * Generates a form for updating company and contact information.
+   * @example
+   * formComponent()
+   * Returns a JSX form element that captures user input for company and contact information.
+   * @param {Object} companyInfo - The object containing current company information including name, taxId, address, city, state, zip, country, phone, email, and website.
+   * @returns {JSX.Element} A form JSX element used for submitting updated company details.
+   * @description
+   *   - Utilizes `handleSubmit` for form submission logic.
+   *   - Employs `handleCompanyInfoChange` to update form fields dynamically upon user input.
+   *   - Uses Tailwind CSS classes for responsive design and consistent styling.
+   */
   const renderCompanySettings = () => (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
@@ -344,6 +387,17 @@ const SettingsModule: React.FC = () => {
   );
   
   // Render notification settings
+  /**
+   * Renders a notification preferences form with adjustable settings for email and in-app notifications.
+   * @example
+   * notificationPreferencesForm()
+   * <div className="space-y-6">...</div>
+   * @returns {JSX.Element} JSX representing the notification preferences form.
+   * @description
+   *   - Contains sections for enabling/disabling email and in-app notifications.
+   *   - Includes notification categories such as Sales Alerts, Inventory Alerts, Customer Updates, and Marketing Campaign Updates with checkboxes to manage preferences.
+   *   - Features a "Save Preferences" button which triggers a save handler.
+   */
   const renderNotificationSettings = () => (
     <div className="space-y-6">
       <div>
@@ -458,6 +512,19 @@ const SettingsModule: React.FC = () => {
   );
   
   // Render appearance settings
+  /**
+   * Renders a settings interface allowing users to customize theme, layout, and color preferences.
+   * @example
+   * renderSettingsInterface()
+   * <div className="space-y-6">...</div>
+   * @param {void} - No parameters are required for this function.
+   * @returns {JSX.Element} A JSX element representing the settings UI component.
+   * @description
+   *   - Includes options for Dark Mode, Layout, and Color Theme settings.
+   *   - Allows toggling dark mode via a checkbox.
+   *   - Provides radio button options to switch between different layouts.
+   *   - Displays clickable color theme options represented by colored circles.
+   */
   const renderAppearanceSettings = () => (
     <div className="space-y-6">
       <div>
@@ -590,6 +657,17 @@ const SettingsModule: React.FC = () => {
   );
   
   // Render security settings
+  /**
+   * Render a module for managing security settings including password, two-factor authentication, and login sessions.
+   * @example
+   * renderSecuritySettings()
+   * Returns a JSX element for displaying settings UI.
+   * @returns {JSX.Element} A JSX element containing several sections for different security settings including password management, two-factor authentication, and session control.
+   * @description
+   *   - The password form includes fields for current and new password inputs, with guidelines for password complexity.
+   *   - Two-factor authentication can be toggled on and off with a switch and set up with a button.
+   *   - Displays current and previous session information, offering functionality to revoke sessions and sign out of all sessions except the current one.
+   */
   const renderSecuritySettings = () => (
     <div className="space-y-6">
       <div>
@@ -716,6 +794,17 @@ const SettingsModule: React.FC = () => {
   );
   
   // Render user management
+  /**
+   * Renders a User Management and Role Management interface with user data, role descriptions, and actions.
+   * @example
+   * SettingsModule()
+   * <div> JSX component structure for managing users and roles </div>
+   * @returns {JSX.Element} The JSX structure that includes user and role management interfaces.
+   * @description
+   *   - Contains tables for user data including name, email, role, status, and action buttons (Edit, Disable/Enable).
+   *   - Provides information on multiple user roles and their corresponding permissions.
+   *   - Utilizes Tailwind CSS classes for styling purposes, creating elements such as buttons, tables, and badges.
+   */
   const renderUserManagement = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -868,6 +957,18 @@ const SettingsModule: React.FC = () => {
   );
   
   // Render database settings
+  /**
+  * Render a settings module component displaying sections for database information, backup settings, and data management.
+  * @example
+  * SettingsModule()
+  * <div className="space-y-6">...</div> // rendered HTML structure
+  * @param {void} None - This component does not take any arguments.
+  * @returns {JSX.Element} A React component structure with detailed sections for database settings.
+  * @description
+  *   - The component organizes information in structured sections with relevant details such as database type, version, connection status, etc.
+  *   - Backup settings allow users to configure automatic backups with options for frequency and retention period.
+  *   - Includes interactive elements like toggles, dropdowns, and buttons for user actions.
+  */
   const renderDatabaseSettings = () => (
     <div className="space-y-6">
       <div>
@@ -996,6 +1097,17 @@ const SettingsModule: React.FC = () => {
   );
   
   // Render active content based on tab
+  /**
+  * Renders specific settings sections based on the active tab.
+  * @example
+  * renderSettingsSection('profile')
+  * Calls renderProfileSettings() function and returns its output.
+  * @param {string} activeTab - The currently selected settings tab.
+  * @returns {JSX.Element} The rendered settings component corresponding to the active tab.
+  * @description
+  *   - Utilizes render functions corresponding to specific tabs to facilitate modular design.
+  *   - Defaults to rendering profile settings if the active tab is not recognized.
+  */
   const renderContent = () => {
     switch (activeTab) {
       case 'profile':

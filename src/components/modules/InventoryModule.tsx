@@ -3,6 +3,19 @@ import { useAppContext } from '../../contexts/AppContext';
 import { Edit, Trash2, Plus, Search, Filter, AlertCircle } from 'lucide-react';
 import { Product } from '../../types';
 
+/**
+ * Inventory management interface for adding, updating, and deleting products
+ * @example
+ * InventoryModule()
+ * Returns an interactive interface for managing products in inventory
+ * @param {object} props - React component props.
+ * @returns {JSX.Element} The inventory management component interface for use within React applications.
+ * @description
+ *   - Utilizes useAppContext to manage state related to products.
+ *   - Filters products based on search input and category selection.
+ *   - Handles form inputs with validation and allows tracking and updating of product details.
+ *   - Displays an interactive UI for managing product inventory with options to add, edit, or delete products.
+ */
 const InventoryModule: React.FC = () => {
   const { products, addProduct, updateProduct, deleteProduct } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,6 +45,18 @@ const InventoryModule: React.FC = () => {
   );
 
   // Handle form input change
+  /**
+   * Handles change events for input fields, updating the product state.
+   * @example
+   * handleChangeEvent(event)
+   * // Updates the state with the new input value.
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} e - The event object from the change event.
+   * @returns {void} No return value.
+   * @description
+   *   - Parses input values as floats if the field is specified as numeric.
+   *   - Updates either the editing or new product state with the new values.
+   *   - Ensures appropriate handling for multiple input field types.
+   */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     const numericFields = ['costPrice', 'sellingPrice', 'stock', 'reorderLevel'];
@@ -50,6 +75,18 @@ const InventoryModule: React.FC = () => {
   };
 
   // Handle add new product
+  /**
+  * Handles form submission, adds a new product, and resets the form.
+  * @example
+  * handleSubmit(event);
+  * // No return value
+  * @param {React.FormEvent} e - The form submission event.
+  * @returns {void} No return value.
+  * @description
+  *   - Calls `addProduct` to add the new product using the current form state.
+  *   - Resets the product form to initial state with default values after submission.
+  *   - Closes the add product modal by setting `setShowAddModal` to false.
+  */
   const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
     addProduct(newProduct);
@@ -95,6 +132,20 @@ const InventoryModule: React.FC = () => {
   const ProductForm: React.FC<{
     onSubmit: (e: React.FormEvent) => void;
     isEdit?: boolean;
+  /**
+   * Renders a form for adding or editing a product in the inventory.
+   * @example
+   * ({ onSubmit, isEdit: true })
+   * <form>...</form>
+   * @param {Function} onSubmit - Function to handle the form submission.
+   * @param {boolean} isEdit - Flag indicating whether the form is in edit mode.
+   * @returns {JSX.Element} The form element for product management.
+   * @description
+   *   - The form adapts its button label to either "Add Product" or "Update Product" based on the `isEdit` flag.
+   *   - Calculates Profit Margin dynamically based on cost price and selling price.
+   *   - Provides input validation via HTML5 attributes such as `required` and `min`.
+   *   - Uses Tailwind CSS classes for styling layout and responsiveness.
+   */
   }> = ({ onSubmit, isEdit = false }) => {
     const product = isEdit ? editingProduct : newProduct;
     

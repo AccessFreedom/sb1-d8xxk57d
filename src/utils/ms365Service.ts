@@ -37,6 +37,18 @@ export const authenticateWithMicrosoft = async (): Promise<boolean> => {
 };
 
 // Mock get documents function
+/**
+ * Fetches documents from Microsoft 365 for a given folder ID.
+ * @example
+ * sync('folder-id-123')
+ * // Returns a promise that resolves to an array of document objects
+ * @param {string} [folderId] - The optional ID of the folder to fetch documents from.
+ * @returns {Promise<Document[]>} A promise that resolves to an array of documents.
+ * @description
+ *   - Simulates a call to the Microsoft Graph API by returning mock data.
+ *   - Resolves after a delay to mimic network latency.
+ *   - Each document object contains metadata such as id, name, size, and URLs.
+ */
 export const getDocuments = async (folderId?: string): Promise<Document[]> => {
   // In a real implementation, this would call the Microsoft Graph API
   console.log('Fetching documents from Microsoft 365...');
@@ -67,6 +79,18 @@ export const getDocuments = async (folderId?: string): Promise<Document[]> => {
 };
 
 // Mock get folders function
+/**
+ * Fetches folders from Microsoft 365.
+ * @example
+ * sync('12345').then(folders => console.log(folders))
+ * // Returns a Promise that resolves to a list of mock folders.
+ * @param {string} [parentId] - The ID of the parent folder. Optional parameter.
+ * @returns {Promise<DocumentFolder[]>} Returns a promise that resolves to an array of DocumentFolder objects.
+ * @description
+ *   - Uses a mock implementation by simulating a network delay of 1 second.
+ *   - Logs a message indicating folders are being fetched from Microsoft 365.
+ *   - The `parentId` parameter allows filtering folders by their parent folder.
+ */
 export const getFolders = async (parentId?: string): Promise<DocumentFolder[]> => {
   // In a real implementation, this would call the Microsoft Graph API
   console.log('Fetching folders from Microsoft 365...');
@@ -87,6 +111,20 @@ export const getFolders = async (parentId?: string): Promise<DocumentFolder[]> =
 };
 
 // Mock create document function
+/**
+ * Simulates the upload of a file to Microsoft 365 and returns a document object.
+ * @example
+ * sync(file, folderId);
+ * Promise<Document>
+ * @param {File} file - The file object to be uploaded.
+ * @param {string} [folderId] - Optional folder ID to specify target location.
+ * @returns {Promise<Document>} A promise that resolves to a mock document object with metadata.
+ * @description
+ *   - Determines document type based on file extension and assigns appropriate type value.
+ *   - The document object's URLs are dynamically generated based on the file name.
+ *   - Uses setTimeout to simulate asynchronous operation with mock data.
+ *   - Returns document metadata including permissions of an admin user.
+ */
 export const createDocument = async (file: File, folderId?: string): Promise<Document> => {
   // In a real implementation, this would upload to Microsoft 365
   console.log('Creating document in Microsoft 365...');
@@ -131,6 +169,19 @@ export const createDocument = async (file: File, folderId?: string): Promise<Doc
 };
 
 // Mock create folder function
+/**
+* Creates a new folder in Microsoft 365 and returns its details.
+* @example
+* sync('New Folder', 'parent-folder-id')
+* Promise<DocumentFolder> containing the folder details
+* @param {string} name - The name of the folder to be created.
+* @param {string} [parentId] - Optional parent folder ID to nest the new folder under.
+* @returns {Promise<DocumentFolder>} A promise that resolves with the details of the created folder.
+* @description
+*   - The function simulates an asynchronous operation using a timeout to mock real folder creation.
+*   - The returned object includes mock data simulating a successful folder creation response.
+*   - The function logs a message indicating the folder creation process in Microsoft 365.
+*/
 export const createFolder = async (name: string, parentId?: string): Promise<DocumentFolder> => {
   // In a real implementation, this would create a folder in Microsoft 365
   console.log('Creating folder in Microsoft 365...');

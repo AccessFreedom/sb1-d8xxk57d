@@ -44,6 +44,18 @@ const ProductionModule: React.FC = () => {
   );
 
   // Status badge component
+  /**
+   * Returns a styled React component based on the status provided.
+   * @example
+   * getStatusComponent({ status: 'in_progress' })
+   * // Returns a <span> element with yellow styling and an icon
+   * @param {Object} {status} - The status of the task which determines the styling and icon. Accepts 'planned', 'in_progress', or 'completed'.
+   * @returns {JSX.Element} A React component with corresponding styling and icon based on the status.
+   * @description
+   *   - Converts the snake_case status string to Capitalized Words for display.
+   *   - Utilizes conditional rendering to associate each status with a predefined color scheme and icon.
+   *   - Ensures that the returned component is responsive and fits the content dynamically.
+   */
   const StatusBadge: React.FC<{ status: ProductionOrder['status'] }> = ({ status }) => {
     let colorClass = '';
     let icon = null;
@@ -72,6 +84,19 @@ const ProductionModule: React.FC = () => {
   };
 
   // Handle form input change for production order
+  /**
+   * Updates order details based on input changes from a form event.
+   * @example
+   * updateOrderDetails(event)
+   * // Updates the specified properties of either `editingOrder` or `newOrder`.
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLSelectElement>} e - Change event triggered by form elements.
+   * @returns {void} Function does not return a value.
+   * @description
+   *   - Handles changes for specific fields: 'productId', 'quantity', and others.
+   *   - Utilizes either `setEditingOrder` or `setNewOrder` state update functions.
+   *   - Searches for a product in the products array using the provided value when 'productId' is changed.
+   *   - Parses 'quantity' value as an integer, defaulting to 0 in case of invalid input.
+   */
   const handleOrderChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
@@ -121,6 +146,18 @@ const ProductionModule: React.FC = () => {
   };
 
   // Handle form input change for current material
+  /**
+   * Handles changes in input fields related to materials by updating the current material state.
+   * @example
+   * handleChange(event)
+   * // Updates the current material state based on the input field change
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLSelectElement>} e - Event triggered by changing an input field. Contains information about target element.
+   * @returns {void} No return value, updates state instead.
+   * @description
+   *   - Finds the material object by material ID when 'materialId' input is changed.
+   *   - Parses and sets the quantity when 'quantityRequired' input is changed.
+   *   - Updates the currentMaterial state object with new values for materialId, materialName, and quantityRequired.
+   */
   const handleMaterialChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
@@ -142,6 +179,18 @@ const ProductionModule: React.FC = () => {
   };
 
   // Add material to production order
+  /**
+   * Updates the order with a new material if the material is valid.
+   * @example
+   * updateMaterialOrder({ materialId: 5, materialName: 'Steel', quantityRequired: 10 })
+   * // Updates the order and resets the current material.
+   * @param {Object} currentMaterial - The material details to be added.
+   * @returns {void} Updates the order with a new material and resets the current material state.
+   * @description
+   *   - Checks that the material has a valid ID and a positive quantity before adding.
+   *   - Handles both editing an existing order and creating a new order.
+   *   - Automatically resets the current material information after updating the order.
+   */
   const addMaterialToOrder = () => {
     if (currentMaterial.materialId && currentMaterial.quantityRequired > 0) {
       const newMaterial = {
@@ -172,6 +221,18 @@ const ProductionModule: React.FC = () => {
   };
 
   // Remove material from production order
+  /**
+   * Removes a material from the order based on the provided materialId
+   * @example
+   * removeMaterialFromOrder("material123")
+   * // This will remove the material with id "material123" from the current order's materials list
+   * @param {string} materialId - The unique identifier of the material to be removed.
+   * @returns {void} Does not return a value; updates the order state directly.
+   * @description
+   *   - Determines whether the current order being edited or a new order should be updated.
+   *   - Modifies the order by filtering out the material with the matching materialId.
+   *   - Uses state management functions (setEditingOrder, setNewOrder) to apply changes.
+   */
   const removeMaterialFromOrder = (materialId: string) => {
     if (editingOrder) {
       setEditingOrder({
@@ -187,6 +248,19 @@ const ProductionModule: React.FC = () => {
   };
 
   // Handle add new production order
+  /**
+  * Handles form submission to add a new production order.
+  * @example
+  * handleSubmit(event)
+  * undefined
+  * @param {React.FormEvent} e - The form submission event.
+  * @returns {void} Does not return a value; side effects of the function manage UI state.
+  * @description
+  *   - Prevents the default form submission action to handle data internally.
+  *   - Checks if the new order has a valid product ID and a positive quantity before proceeding.
+  *   - Resets the 'newOrder' state to its initial values after adding a production order.
+  *   - Closes the add modal after successfully adding the order.
+  */
   const handleAddOrder = (e: React.FormEvent) => {
     e.preventDefault();
     if (newOrder.productId && newOrder.quantity > 0) {
@@ -230,6 +304,20 @@ const ProductionModule: React.FC = () => {
   const OrderForm: React.FC<{
     onSubmit: (e: React.FormEvent) => void;
     isEdit?: boolean;
+  /**
+   * Renders a production order form that supports both creation and editing of orders.
+   * @example
+   * ProductionOrderForm({ onSubmit: handleSubmit, isEdit: true })
+   * Returns a JSX form with input fields prefilled if in edit mode.
+   * @param {Function} onSubmit - Callback function to handle the form submission.
+   * @param {boolean} [isEdit=false] - Flag indicating whether the form is in edit mode.
+   * @returns {JSX.Element} A JSX form element for creating or editing a production order.
+   * @description
+   *   - The form dynamically switches between creation and editing modes based on the `isEdit` flag.
+   *   - Fields include product selection, quantity, start date, due date, status, and required materials.
+   *   - Supports addition of materials with live stock status check.
+   *   - Provides cancel functionality that resets form state based on the mode.
+   */
   }> = ({ onSubmit, isEdit = false }) => {
     const order = isEdit ? editingOrder : newOrder;
     

@@ -4,6 +4,20 @@ import { File, FolderPlus, Folder, FilePlus, Search, Filter, Grid, List, MoreHor
 import { Document, DocumentFolder, DocumentPermission } from '../../types';
 
 // Icon mapping based on file type
+/**
+* Determines and returns the appropriate file icon component based on the document type
+* @example
+* getFileIconComponent({ type: 'pdf', className: 'custom-class' })
+* <FilePen className="custom-class text-red-500" />
+* @param {Object} config - Configuration object containing type and optional className.
+* @param {string} config.type - The type of document, e.g., 'word', 'excel', 'powerpoint', 'pdf'.
+* @param {string} [config.className='w-10 h-10'] - Optional CSS classes to apply to the file icon component.
+* @returns {JSX.Element} Returns the JSX element representing the file icon with applied styles.
+* @description
+*   - Uses a switch statement to determine the icon and color based on the document type.
+*   - Each file type corresponds to a distinct color and file icon component.
+*   - Default icon and color are used when no valid type is passed.
+*/
 const FileIcon = ({ type, className = "w-10 h-10" }) => {
   switch (type) {
     case 'word':
@@ -99,6 +113,19 @@ const DocumentsModule: React.FC = () => {
   };
   
   // Get breadcrumb path
+  /**
+   * Constructs a path from a current folder to the root in a hierarchical folder structure.
+   * @example
+   * functionName(3, documentFolders)
+   * [{ id: null, name: 'My Documents' }, { id: 1, name: 'Folder A' }, { id: 3, name: 'Folder C' }]
+   * @param {number} currentFolder - The ID of the current folder from which the path starts.
+   * @param {Array<Object>} documentFolders - Array of folder objects, each containing id, name, and parentId.
+   * @returns {Array<Object>} An array representing the path from the root to the current folder, each object contains id and name.
+   * @description
+   *   - The function assumes that the folder array contains unique ids for each folder.
+   *   - If a folder with a given id is not found, the path construction will terminate early.
+   *   - The path starts with a generic 'My Documents' entry and then includes all found folders from the root to the specified folder.
+   */
   const getBreadcrumbPath = () => {
     const path = [{ id: null, name: 'My Documents' }];
     let currentId = currentFolder;
@@ -117,6 +144,19 @@ const DocumentsModule: React.FC = () => {
   };
   
   // Handle file upload
+  /**
+   * Handles form submission to upload a file and create a new document.
+   * @example
+   * handleSubmit(event)
+   * Document object is created and stored.
+   * @param {React.FormEvent} e - The form event triggered by submission, used to prevent default form action.
+   * @returns {void} No return value.
+   * @description
+   *   - Simulates file upload progress by using an interval to increment progress state.
+   *   - Determines document type based on the file extension and creates a document object.
+   *   - Sets the upload file and progress state back to initial state upon completion.
+   *   - Calls addDocument with the new document object to store it.
+   */
   const handleFileUpload = (e: React.FormEvent) => {
     e.preventDefault();
     if (!uploadFile) return;
@@ -174,6 +214,19 @@ const DocumentsModule: React.FC = () => {
   };
   
   // Handle new folder creation
+  /**
+  * Handles the form submission for creating a new document folder.
+  * @example
+  * handleSubmit(event)
+  * // Prevents default form submission, creates a new folder, and resets state.
+  * @param {React.FormEvent} e - The form submission event.
+  * @returns {void} No return value.
+  * @description
+  *   - Prevents the default form behavior to stop page reloads upon submission.
+  *   - Ensures new folder names are not empty or solely spaces.
+  *   - Sets the folder's creation and update times to the current date and time.
+  *   - Resets the folder name input and hides the new folder modal after submission.
+  */
   const handleCreateFolder = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newFolderName.trim()) return;
@@ -191,6 +244,19 @@ const DocumentsModule: React.FC = () => {
   };
   
   // Handle document sharing
+  /**
+  * Handles form submission to update document permissions based on user input
+  * @example
+  * handleFormSubmit(event)
+  * undefined
+  * @param {React.FormEvent} e - Event object representing the form submission event.
+  * @returns {void} Does not return a value.
+  * @description
+  *   - Prevents the default form submission behavior.
+  *   - Checks if the share modal is open and if a user email is provided.
+  *   - Creates a new permission object with a unique id based on the current timestamp.
+  *   - Resets the new permission form fields and closes the share modal.
+  */
   const handleShareDocument = (e: React.FormEvent) => {
     e.preventDefault();
     if (!showShareModal || !newPermission.userEmail) return;
@@ -235,6 +301,21 @@ const DocumentsModule: React.FC = () => {
   };
   
   // Document Item component (used in both grid and list views)
+  /**
+   * Renders a document item either in grid or list view with interaction features.
+   * 
+   * @example
+   * renderDocument({ id: 1, name: 'Document', size: 1024, type: 'pdf', updatedAt: new Date(), webUrl: 'http://...', lastModifiedBy: 'User', folder: 'Folder' })
+   * // Returns a React component for displaying the document in the selected view mode
+   * 
+   * @param {Object} document - The document object containing details to render.
+   * @returns {JSX.Element} A JSX element for displaying the document.
+   * @description
+   *   - Handles click events to toggle document selection.
+   *   - Supports document actions like preview, open, share, and delete.
+   *   - Conditionally renders based on view mode: 'grid' or 'list'.
+   *   - Applies styles and icons to enhance user interaction and visuals.
+   */
   const DocumentItem: React.FC<{ document: Document }> = ({ document }) => {
     const isSelected = selectedDocuments.includes(document.id);
     
@@ -373,6 +454,19 @@ const DocumentsModule: React.FC = () => {
   };
   
   // Folder Item component
+  /**
+   * Renders a folder either as a grid item or a table row based on the view mode.
+   * @example
+   * renderFolderComponent({folder})
+   * // Renders as a grid item or table row and enables folder management options
+   * @param {Object} folder - An object representing the folder which includes folder details like id, name, and updatedAt date.
+   * @returns {JSX.Element} A JSX element that visually represents the folder with actions for renaming and deletion.
+   * @description
+   *   - Handles `click` events for folder selection, renaming, and deletion.
+   *   - Supports confirmation prompts for deleting a folder.
+   *   - Uses `viewMode` variable to determine rendering style as grid or list.
+   *   - Prevents propagation of events to allow handling within buttons.
+   */
   const FolderItem: React.FC<{ folder: DocumentFolder }> = ({ folder }) => {
     return viewMode === 'grid' ? (
       <div 

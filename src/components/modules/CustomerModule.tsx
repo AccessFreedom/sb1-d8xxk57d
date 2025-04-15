@@ -3,6 +3,19 @@ import { useAppContext } from '../../contexts/AppContext';
 import { Edit, Trash2, Plus, Search, Filter, MoreHorizontal, File, FileText, FilePlus, ChevronRight, ChevronDown } from 'lucide-react';
 import { Customer, Document } from '../../types';
 
+/**
+ * A customer management component that allows users to add, edit, search, filter, and display a list of customers along with their documents.
+ * @example
+ * useCustomerManagement()
+ * Returns a rendered UI component for customer management.
+ * @param {None} None - This hook function does not take any parameters.
+ * @returns {JSX.Element} The complete customer management interface including search, add, edit, and view functionalities.
+ * @description
+ *   - Utilizes context to access and modify customer data globally.
+ *   - State is managed using React's useState hook for various UI interactions such as modals and search state.
+ *   - Provides inline editing and document association for each customer.
+ *   - Offers a responsive design accommodating both mobile and desktop users.
+ */
 const CustomerModule: React.FC = () => {
   const { customers, documents, addCustomer, updateCustomer, deleteCustomer } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,6 +40,17 @@ const CustomerModule: React.FC = () => {
   );
 
   // Handle form input change
+  /**
+   * Updates the customer information based on the triggered event from a form input.
+   * @example
+   * handleInputChange(event)
+   * No specific return value; updates customer data state.
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>} e - The event triggered by the form input change that contains the name and value.
+   * @returns {void} This function does not return a value.
+   * @description
+   *   - Updates either editing or new customer state depending on the current operation mode.
+   *   - Merges the existing customer data with the new input value, preserving other properties.
+   */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
@@ -44,6 +68,19 @@ const CustomerModule: React.FC = () => {
   };
 
   // Handle add new customer
+  /**
+  * Handles the submission event for adding a new customer.
+  * @example
+  * handleSubmit(e)
+  * // no return value
+  * @param {React.FormEvent} e - The form submission event.
+  * @returns {void} Does not return anything.
+  * @description
+  *   - Prevents the default form submission behavior.
+  *   - Calls a function to add a new customer with current input values.
+  *   - Resets the new customer form fields to default values.
+  *   - Closes the modal used for adding a new customer.
+  */
   const handleAddCustomer = (e: React.FormEvent) => {
     e.preventDefault();
     addCustomer(newCustomer);
@@ -90,6 +127,19 @@ const CustomerModule: React.FC = () => {
   };
 
   // Status badge component
+  /**
+  * Returns a styled span element based on the given status.
+  * @example
+  * renderStatusBadge({ status: 'active' })
+  * <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+  * @param {Object} params - The parameters for the function.
+  * @param {string} params.status - The status of the item which determines the styling of the badge.
+  * @returns {JSX.Element} A span element with a class and text content based on status.
+  * @description
+  *   - The function capitalizes the first letter of the status when displaying it in the span.
+  *   - Utilizes Tailwind CSS classes for styling the badge based on status.
+  *   - Provides fallback styling of an empty string if status does not match predefined cases.
+  */
   const StatusBadge: React.FC<{ status: Customer['status'] }> = ({ status }) => {
     let colorClass = '';
     
@@ -123,6 +173,18 @@ const CustomerModule: React.FC = () => {
   };
 
   // File icon component
+  /**
+  * Returns an icon component based on the document type provided.
+  * @example
+  * getFileIcon({ type: 'word' })
+  * returns: <FileText className="text-blue-500" size={16} />
+  * @param {Object} {type} - Specifies the type of document (e.g., 'word', 'excel', 'powerpoint', 'pdf').
+  * @returns {JSX.Element} JSX element representing the icon with a color corresponding to the document type.
+  * @description
+  *   - Handles unknown document types by returning a default gray icon.
+  *   - Utilizes the FileText and File components to visually represent document types.
+  *   - Ensures consistent icon sizes across different document types.
+  */
   const FileIcon = ({ type }) => {
     switch (type) {
       case 'word':
@@ -142,6 +204,20 @@ const CustomerModule: React.FC = () => {
   const CustomerForm: React.FC<{
     onSubmit: (e: React.FormEvent) => void;
     isEdit?: boolean;
+  /**
+   * Renders a form for adding or editing customer details.
+   * @example
+   * renderCustomerForm({ onSubmit: handleSubmit, isEdit: true })
+   * // Returns JSX for updating customer details form when in edit mode.
+   * @param {function} onSubmit - Function to handle form submission.
+   * @param {boolean} isEdit - Determines if the form is in edit mode or add mode.
+   * @returns {JSX.Element} A form element for customer data input.
+   * @description
+   *   - Fields include name, email, phone, company, status, last contact, and notes.
+   *   - The form adapts its behavior based on edit or add mode indicated by `isEdit`.
+   *   - The form integrates controlled components via `handleInputChange` for state management.
+   *   - Uses Tailwind CSS for styling and layout configuration.
+   */
   }> = ({ onSubmit, isEdit = false }) => {
     const customer = isEdit ? editingCustomer : newCustomer;
     

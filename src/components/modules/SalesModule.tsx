@@ -2,6 +2,18 @@ import React, { useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { TrendingUp, ArrowDownUp, Users, ShoppingBag, DollarSign, Package } from 'lucide-react';
 
+/**
+ * Sales Dashboard component rendering various sales analytics and graphs.
+ * @example
+ * // Usage in a React component
+ * <SalesDashboard />
+ * @returns {JSX.Element} A styled dashboard displaying sales data including total sales, invoices, top products, customers and sales trends.
+ * @description
+ *   - Utilizes React hooks (useState) for managing state related to time filtering.
+ *   - Leverages context (`useAppContext`) to access global app data such as invoices, customers, and products.
+ *   - Formats currency using `Intl.NumberFormat` for consistency according to 'en-GB' locale.
+ *   - Provides an interactive time period selector to filter and display data for the last month, quarter, or year.
+ */
 const SalesModule: React.FC = () => {
   const { invoices, customers, products } = useAppContext();
   const [timeFilter, setTimeFilter] = useState('month'); // month, quarter, year
@@ -16,6 +28,19 @@ const SalesModule: React.FC = () => {
   };
 
   // Calculate total sales based on time filter
+  /**
+  * Calculate the total sum of paid invoices within a specified time period.
+  * @example
+  * calculateTotalPaidInvoices('month', invoices)
+  * 1500
+  * @param {string} timeFilter - The time period filter, can be 'month', 'quarter', or 'year'.
+  * @param {Array} invoices - Array of invoice objects, each containing 'status', 'date', and 'total'.
+  * @returns {number} Total sum of paid invoices within the specified time period.
+  * @description
+  *   - Filters invoices that are marked as 'paid'.
+  *   - Calculates the total for invoices only if their date is newer than the threshold date.
+  *   - The threshold date is determined based on the current date and the "timeFilter" specified.
+  */
   const calculateTotalSales = () => {
     const now = new Date();
     let threshold = new Date();
@@ -40,6 +65,19 @@ const SalesModule: React.FC = () => {
   };
 
   // Calculate total invoices count based on time filter
+  /**
+  * Filters and counts invoices based on specified time filter ('month', 'quarter', 'year').
+  * @example
+  * filterInvoicesByTime(invoices, 'month')
+  * 5
+  * @param {Array} invoices - List of invoices to be filtered.
+  * @param {string} timeFilter - Time filter criterion ('month', 'quarter', 'year').
+  * @returns {number} Number of invoices within the specified time period.
+  * @description
+  *   - Uses JavaScript's Date object to determine the threshold date.
+  *   - Filters invoices by comparing their date against the calculated threshold time.
+  *   - Supports basic time categories: month, quarter, and year.
+  */
   const calculateInvoicesCount = () => {
     const now = new Date();
     let threshold = new Date();
@@ -64,6 +102,22 @@ const SalesModule: React.FC = () => {
   };
 
   // Get top selling products
+  /**
+   * Processes invoices to compile and sort product sales data.
+   * @example
+   * aggregateProductSales(invoices)
+   * [
+   *   { productId: '123', name: 'Product A', quantity: 50, revenue: 500 },
+   *   { productId: '456', name: 'Product B', quantity: 30, revenue: 300 },
+   *   ...
+   * ]
+   * @param {Array<Object>} invoices - Array of invoice objects containing item details.
+   * @returns {Array<Object>} Array of top 5 products sorted by quantity sold.
+   * @description
+   *   - Extracts product sales information from invoices and computes total quantities and revenue.
+   *   - Constructs product sales data into an array and sorts it by highest quantity sold.
+   *   - Limits the resulting array to the top 5 products based on quantity.
+   */
   const getTopSellingProducts = () => {
     // Aggregate product quantities from invoices
     const productSales = {};
@@ -91,6 +145,18 @@ const SalesModule: React.FC = () => {
   };
 
   // Get top customers
+  /**
+  * Aggregate customer purchases and return the top 5 customers by total spent
+  * @example
+  * aggregateAndRankCustomers(invoices)
+  * [{"customerId": 1, "name": "John Doe", "total": 500, "count": 2}, ...]
+  * @param {Array} invoices - An array of invoice objects each containing a customerId, customerName, and total.
+  * @returns {Array} An array of aggregated customer sales data sorted by total spent.
+  * @description
+  *   - The function aggregates purchases per customer.
+  *   - It sorts customers by the total amount spent in descending order.
+  *   - The function only returns the top 5 customers based on their purchasing total.
+  */
   const getTopCustomers = () => {
     // Aggregate customer purchases
     const customerSales = {};
@@ -116,6 +182,17 @@ const SalesModule: React.FC = () => {
   };
 
   // Calculate sales by month for current year
+  /**
+   * Calculates total sales for each month in the current year based on paid invoices.
+   * @example
+   * calculateMonthlySales(invoices)
+   * [0, 2000, 1500, 0, 2200, 0, 0, 0, 0, 3000, 0, 0]
+   * @param {Array} invoices - A list of invoice objects where each invoice contains a date, status, and total amount.
+   * @returns {Array} An array of 12 numbers representing the total sales for each month in the current year.
+   * @description
+   *   - Processes only invoices marked as 'paid' within the current year.
+   *   - Initializes an array of length 12 where each element corresponds to a month, starting from January.
+   */
   const getSalesByMonth = () => {
     const currentYear = new Date().getFullYear();
     const salesByMonth = Array(12).fill(0);

@@ -19,6 +19,22 @@ interface StatCardProps {
   color: string;
 }
 
+/**
+ * Renders a styled dashboard widget component.
+ * @example
+ * widgetComponent({ title: "Revenue", value: "$500", icon: <RevenueIcon />, color: "bg-green-500" })
+ * Returns a JSX element rendering the widget with specified styles and values.
+ * @param {object} params - Contains the title, value, icon, and color for the component.
+ * @param {string} params.title - The title to display in the widget.
+ * @param {string|number} params.value - The value to display prominently in the widget.
+ * @param {JSX.Element} params.icon - An icon element to display within the widget.
+ * @param {string} params.color - Tailwind CSS class for background color of the icon section.
+ * @returns {JSX.Element} A styled widget component for displaying specific data on a dashboard.
+ * @description
+ *   - Combines utility classes to create a visually appealing dashboard card.
+ *   - Uses Tailwind CSS for styling.
+ *   - Flexible design allowing for various data types in the value field.
+ */
 const StatCard: React.FC<StatCardProps> = ({ title, value, icon, color }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm p-5 flex items-center">
@@ -33,6 +49,19 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, icon, color }) => {
   );
 };
 
+/**
+ * Renders the business overview dashboard with various statistics, including sales, expenses, customer, and marketing data.
+ * @example
+ * Dashboard()
+ * <div className="space-y-6">...</div>
+ * @param {object} props - Contains the statistics and data to be displayed on the dashboard.
+ * @returns {JSX.Element} A React component that displays the business overview.
+ * @description
+ *   - Formats currency values to GBP.
+ *   - Calculates net profit by subtracting expenses from total sales.
+ *   - Computes the conversion rate as a percentage based on campaign data.
+ *   - Utilizes the useAppContext hook to access shared state within the application.
+ */
 const Dashboard: React.FC = () => {
   const { stats } = useAppContext();
   

@@ -3,6 +3,19 @@ import { useAppContext } from '../../contexts/AppContext';
 import { Edit, Trash2, Plus, Search, Filter, CheckCircle, XCircle, Clock } from 'lucide-react';
 import { Expense } from '../../types';
 
+/**
+ * Manages expenses by providing functionalities for adding, editing, deleting, and filtering expense records.
+ * @example
+ * ExpenseModule()
+ * Renders the expense management interface with add, edit, and filter functionalities.
+ * @param {object} useAppContext - Provides context for the application including expenses and methods to manage them.
+ * @returns {JSX.Element} Renders an expense management interface.
+ * @description
+ *   - Utilizes React hooks for state management, including useState and useAppContext.
+ *   - Allows filtering of expenses based on vendor, description, status, and category.
+ *   - Provides modals for adding and editing expenses.
+ *   - Formats currency display according to GBP standards.
+ */
 const ExpenseModule: React.FC = () => {
   const { expenses, addExpense, updateExpense, deleteExpense } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,6 +53,18 @@ const ExpenseModule: React.FC = () => {
   };
 
   // Status badge component
+  /**
+  * Returns a styled React component for displaying the status with corresponding color and icon.
+  * @example
+  * statusDisplay({ status: 'pending' })
+  * // Returns a span element with yellow color class and clock icon
+  * @param {Object} statusObject - An object containing the status to be displayed.
+  * @returns {JSX.Element} A styled span element representing the status.
+  * @description
+  *   - The function uses the status to determine which color class and icon to apply.
+  *   - It capitalizes the first letter of the status string for display.
+  *   - The component uses Tailwind CSS classes for styling.
+  */
   const StatusBadge: React.FC<{ status: Expense['status'] }> = ({ status }) => {
     let colorClass = '';
     let icon = null;
@@ -68,6 +93,19 @@ const ExpenseModule: React.FC = () => {
   };
 
   // Handle form input change
+  /**
+  * Handles the change event for input elements and updates the respective expense data.
+  * @example
+  * handleExpenseChange(event)
+  * Updates amount or other fields in newExpense or editingExpense state.
+  * @param {React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>} e - The event object containing the name and value of the input element.
+  * @returns {void} No return value.
+  * @description
+  *   - Parses the 'amount' input to a float and defaults to 0 if NaN.
+  *   - Updates state for either new or editing expense based on current context.
+  *   - Ensures the correct property ('amount' or other named property) is updated in the expense object.
+  *   - Handles different input elements (input, select, textarea) interchangeably.
+  */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
@@ -100,6 +138,17 @@ const ExpenseModule: React.FC = () => {
   };
 
   // Handle add new expense
+  /**
+  * Handles form submission for adding a new expense entry
+  * @example
+  * handleSubmit(event)
+  * // Prevents default form submission, adds new expense, resets the form, and closes the modal
+  * @param {React.FormEvent} e - The form submission event.
+  * @returns {void} Does not return a value, performs UI updates and state changes.
+  * @description
+  *   - Resets the new expense data to initial default values.
+  *   - Closes the "Add Expense" modal upon completion.
+  */
   const handleAddExpense = (e: React.FormEvent) => {
     e.preventDefault();
     addExpense(newExpense);
@@ -134,6 +183,20 @@ const ExpenseModule: React.FC = () => {
   const ExpenseForm: React.FC<{
     onSubmit: (e: React.FormEvent) => void;
     isEdit?: boolean;
+  /**
+   * Renders an expense form for adding or editing expense details.
+   * @example
+   * renderExpenseForm({ onSubmit, isEdit: true })
+   * <form>...</form>
+   * @param {function} onSubmit - Function to handle form submission.
+   * @param {boolean} isEdit - Indicator for edit mode, determines if the form is for editing or adding a new expense. Defaults to false.
+   * @returns {JSX.Element} A form element containing fields for expense details including category, vendor, date, amount, description, and status.
+   * @description
+   *   - Adjusts input values dynamically based on whether the form is in edit mode.
+   *   - Provides default values for form fields if not specified.
+   *   - Offers cancel functionality with dynamic behavior for edit and add modes.
+   *   - Submits the form data using the specified onSubmit handler.
+   */
   }> = ({ onSubmit, isEdit = false }) => {
     const expense = isEdit ? editingExpense : newExpense;
     

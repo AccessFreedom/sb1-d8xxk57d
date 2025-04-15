@@ -75,6 +75,17 @@ const InvoiceModule: React.FC = () => {
   };
 
   // Status badge component
+  /**
+  * Returns a styled span element with a color class based on invoice status.
+  * @example
+  * renderInvoiceStatus({ status: 'paid' })
+  * <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Paid</span>
+  * @param {Object} statusObj - An object containing the status of the invoice.
+  * @returns {JSX.Element} A span element styled according to the specified status.
+  * @description
+  *   - Applies different color classes for different invoice statuses ('paid', 'sent', 'draft', 'overdue').
+  *   - Capitalizes the first letter of the status text for display.
+  */
   const StatusBadge: React.FC<{ status: Invoice['status'] }> = ({ status }) => {
     let colorClass = '';
     
@@ -101,6 +112,17 @@ const InvoiceModule: React.FC = () => {
   };
 
   // File icon component
+  /**
+   * Returns an icon component corresponding to the file type.
+   * @example
+   * getFileIcon('word')
+   * <FileText className="text-blue-500" size={16} />
+   * @param {string} type - The file type to match for the icon display.
+   * @returns {JSX.Element} A JSX Element representing the icon for the specified file type.
+   * @description
+   *   - Uses different color codes to visually differentiate between file types.
+   *   - Returns a default file icon for unspecified file types with a gray color.
+   */
   const FileIcon = ({ type }) => {
     switch (type) {
       case 'word':
@@ -117,6 +139,18 @@ const InvoiceModule: React.FC = () => {
   };
 
   // Handle form input change for invoice
+  /**
+   * Handles change events for inputs related to invoice creation or editing.
+   * @example
+   * handleInputChange(event)
+   * Updates the invoice state with new values based on the event input.
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLSelectElement>} e - The change event from the input element.
+   * @returns {void} No return value, updates the invoice state directly.
+   * @description
+   *   - Updates either a new invoice or an existing one in editing mode.
+   *   - Specifically updates customerId and customerName if the name is 'customerId'.
+   *   - Handles both scenarios where an invoice is being edited or new invoice creation is in process.
+   */
   const handleInvoiceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
@@ -153,6 +187,19 @@ const InvoiceModule: React.FC = () => {
   };
 
   // Handle form input change for current item
+  /**
+   * Handles changes in input fields for invoice items and updates the current item state.
+   * @example
+   * handleChange(event)
+   * Updates the current item based on the field changed and its value
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLSelectElement>} e - The change event triggered by user input in invoice item fields.
+   * @returns {void} No return value, function modifies state.
+   * @description
+   *   - Updates product details such as product ID, description, unit price, and total when product ID is changed.
+   *   - Computes quantities or unit prices to recalculate total prices based on user input in quantity or unit price fields.
+   *   - Assumes default quantity as 1 if not defined during product ID change.
+   *   - Handles generic updates for other input fields by directly assigning their values.
+   */
   const handleItemChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
@@ -194,6 +241,19 @@ const InvoiceModule: React.FC = () => {
   };
 
   // Add current item to invoice
+  /**
+   * Adds a new item to either the editing or a new invoice and updates totals
+   * @example
+   * addItemToInvoice(currentItem)
+   * // Updates invoice with new item and recalculates total
+   * @param {object} currentItem - The current item object including productId, quantity, unitPrice, etc.
+   * @returns {void} Does not return any value.
+   * @description
+   *   - Generates a unique ID for each new item using a random string.
+   *   - Appends the new item to either an existing invoice or a new one.
+   *   - Resets the current item to its initial state after adding.
+   *   - Calculates the total cost of items in the invoice after adding the new item.
+   */
   const addItemToInvoice = () => {
     if (currentItem.productId && currentItem.quantity && currentItem.unitPrice) {
       const newItem: InvoiceItem = {
@@ -234,6 +294,17 @@ const InvoiceModule: React.FC = () => {
   };
 
   // Remove item from invoice
+  /**
+  * Removes an item from an invoice and updates the invoice state.
+  * @example
+  * removeItemFromInvoice('12345')
+  * // Updates the state by removing the item with '12345' from the current invoice
+  * @param {string} itemId - The ID of the item to be removed from the invoice.
+  * @returns {void} No return value; updates the invoice state directly.
+  * @description
+  *   - Differentiates between editing an existing invoice and creating a new one by checking `editingInvoice`.
+  *   - Recalculates the total invoice amount after removing the specified item.
+  */
   const removeItemFromInvoice = (itemId: string) => {
     if (editingInvoice) {
       const updatedItems = editingInvoice.items.filter(item => item.id !== itemId);
@@ -253,6 +324,19 @@ const InvoiceModule: React.FC = () => {
   };
 
   // Handle add new invoice
+  /**
+   * Handles the form submission for adding a new invoice.
+   * @example
+   * handleSubmit(event)
+   * // Prevents default form submission, validates, adds invoice, and resets form.
+   * @param {React.FormEvent} e - The form submission event.
+   * @returns {void} No return value.
+   * @description
+   *   - Prevents default form submission behavior.
+   *   - Validates that a customer ID and item(s) are provided before processing.
+   *   - Resets the invoice form upon successful submission.
+   *   - Closes the add invoice modal after submission.
+   */
   const handleAddInvoice = (e: React.FormEvent) => {
     e.preventDefault();
     if (newInvoice.customerId && newInvoice.items.length > 0) {
@@ -290,6 +374,21 @@ const InvoiceModule: React.FC = () => {
   const InvoiceForm: React.FC<{
     onSubmit: (e: React.FormEvent) => void;
     isEdit?: boolean;
+  /**
+   * Renders a form for creating or editing an invoice.
+   * @example
+   * renderInvoiceForm({ onSubmit: handleSubmit, isEdit: true })
+   * Returns a form element for editing an existing invoice.
+   * @param {Object} params - The parameters for rendering the form.
+   * @param {Function} params.onSubmit - Callback function triggered on form submission.
+   * @param {boolean} [params.isEdit=false] - Determines whether the form is for editing an existing invoice or creating a new one.
+   * @returns {JSX.Element} A form element for invoice creation or editing.
+   * @description
+   *   - The form handles customer selection and status updates.
+   *   - Includes date and due date input fields with default validation.
+   *   - Supports adding multiple items with product and quantity selection.
+   *   - Displays total invoice amount dynamically based on added items.
+   */
   }> = ({ onSubmit, isEdit = false }) => {
     const invoice = isEdit ? editingInvoice : newInvoice;
     

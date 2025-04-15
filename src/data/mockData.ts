@@ -190,6 +190,18 @@ export const mockMaterials: Material[] = [
 ];
 
 // Generate mock invoice items from products
+/**
+* Generates a list of randomly selected product items with quantities and prices.
+* @example
+* generateItems(2)
+* // Returns an array of 2 items with random products, quantities, and total prices.
+* @param {number} count - The number of product items to generate.
+* @returns {Array<Object>} An array of objects, each representing a product with id, productId, description, quantity, unitPrice, and total.
+* @description
+*   - Utilizes a `mockProducts` array to select random products.
+*   - Each product has a randomly generated quantity between 1 and 5.
+*   - Each item's total is calculated as quantity times the unit price.
+*/
 const generateInvoiceItems = (count = 3) => {
   const items = [];
   for (let i = 0; i < count; i++) {
@@ -385,6 +397,23 @@ export const mockCampaigns: Campaign[] = [
 ];
 
 // Generate production materials for orders
+/**
+ * Generates a list of items with random material details and required quantity.
+ * @example
+ * generateItems(3)
+ * // Possible return value:
+ * // [
+ * //   { materialId: 1, materialName: 'Wood', quantityRequired: 5 },
+ * //   { materialId: 2, materialName: 'Metal', quantityRequired: 8 },
+ * //   { materialId: 3, materialName: 'Plastic', quantityRequired: 2 }
+ * // ]
+ * @param {number} count - Number of items to generate.
+ * @returns {Array<Object>} A list of items containing material details and quantity required.
+ * @description
+ *   - Utilizes the global list `mockMaterials` to select random materials.
+ *   - The `materialId` and `materialName` are derived from the randomly chosen material.
+ *   - The `quantityRequired` is generated randomly between 1 and 10.
+ */
 const generateProductionMaterials = (count = 3) => {
   const items = [];
   for (let i = 0; i < count; i++) {
